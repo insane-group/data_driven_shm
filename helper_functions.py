@@ -1,6 +1,6 @@
 
 '''
-INDEX
+CONTENTS
 
 1)X AND Y SET CREATORS
 
@@ -196,14 +196,9 @@ def y_set(path,mode):
 
 - - - A) FOURIER SIGNAL NORMALIZATION
 
-
 - - - B) SIGNAL PROPERTIES EXTRACTION WITH NORMALIZATION
 
-
-
 - - - C) HARMONICS WITH NORMALIZATION 
-
-
 
 '''
 
@@ -215,12 +210,22 @@ def y_set(path,mode):
 
 A) FOURIER SIGNAL NORMALIZATION
 
+ta tria parakatw functions leitourgoun mazi
+gia na parw to kanonikopoihmeno shma xrhsimopoiw to fourier std vector
+to opoio pairnei san input to path kai to output einai to kanonikopoihmeno shma
+
 ---> fourier signal standardization (fourier_signal_standardization)
+To input einai ena sample shmatos kai ypologizei to fft kai kanonikopoei ws pros th megisth syxnothta
+dhladh th syxnothta diegershs. To amplitude einai kanonikopoihmeno ws pros to amplitude sth megisth syxnothta kai 
+h suxnothta einai kanonikopoihmenh ws pros th syxnothta diegershs
 
 ---> fourier vector maker (fourier_vector_maker)
+Pairnei san input data (mia lista h array apo shmata) kai efarmozei th sunarthsh fourier_signal_standardization kai dinei to kanonikopoihmeno shma
+to input einai ta data kai ta output einai mia lista me to kanonikopoihmeno amplitude kai mia lista me thn kanonikopoihmenh syxnothta
 
 ---> fourier std vector (fourier_std_vector)
-
+To input einai to path kai efarmozei thn sunarthsh fourier_vector_maker gia olous tous sensors kathe shmatos sto path.
+To input einai to path kai to output einai ta concatenated normalized shmata olwn twn samples sto path
 
 '''
 
@@ -284,8 +289,20 @@ def fourier_std_vector(path):
 
 B) SIGNAL PROPERTIES EXTRACTION WITH NORMALIZATION
 
----> signal properties extraction (signal_props_extract)
+ta tria parakatw functions leitourgoun mazi
+gia na parw to kanonikopoihmeno shma me ta props xrhsimopoiw to fourier_std_with_props_vector
+to opoio pairnei san input to path kai to output einai to kanonikopoihmeno shma me ta props
 
+gia na parw to raw shma me ta props xrhsimopoiw to signal_with_props_vector
+to opoio pairnei san input to path kai to output einai to raw shma me ta props
+
+gia na parw ta props xrhsimopoiw to props_vector
+to opoio pairnei san input to path kai to output einai ta props
+
+
+---> signal properties extraction (signal_props_extract)
+To input einai to sample tou kanonikopoihmenou shmatos kai to output einai kapoia properties tou shmatos.
+T
 ---> signal properties extraction run (run_signal_extract)
 
 ---> raw signal with properties (signal_with_props_vector)
