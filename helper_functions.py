@@ -289,7 +289,7 @@ def fourier_std_vector(path):
 
 B) SIGNAL PROPERTIES EXTRACTION WITH NORMALIZATION
 
-ta tria parakatw functions leitourgoun mazi
+ta parakatw functions leitourgoun mazi
 gia na parw to kanonikopoihmeno shma me ta props xrhsimopoiw to fourier_std_with_props_vector
 to opoio pairnei san input to path kai to output einai to kanonikopoihmeno shma me ta props
 
@@ -302,14 +302,27 @@ to opoio pairnei san input to path kai to output einai ta props
 
 ---> signal properties extraction (signal_props_extract)
 To input einai to sample tou kanonikopoihmenou shmatos kai to output einai kapoia properties tou shmatos.
-T
+Ta properties poy ypologizei einai h diafora metaksy twn duo megalyterwn syxnothtwn kai h diafora metaksy twn duo megaluterwn amplitudes
+
 ---> signal properties extraction run (run_signal_extract)
+To input einai data (lista h array me shmata) kai prwta kanonikopoiei ta shmata kai meta trexei 
+gia kathe sample to signal_props_extract kai to output einai mia lista me ta properties tou kathe 
+kanonikopoihmenou shmatos
 
 ---> raw signal with properties (signal_with_props_vector)
+To input einai to path kai to transformation pou thelw kai to output einai ena array me to shma kai ta properties tou kanonikopoihmenoy shmatos
+xrhsimopoei to function X_set gia na ftiaksei to shma kai na kanei to transformation pou tha dothei kai meta kanonikopoei to shma kai dinei ta properties tou
+To output einai ena concatenated array me to original h to transformed shma me th suxnothta kai ta properties tou kanonikopoihmenou shmatos 
 
 ---> properties vector (props_vector)
+To input einai to path kai output einai ena array me ta properties tou kanonikopoihmenoy shmatos
+gia kathe sensora trexei run_signal_extract kai bgazei ta properties tou shmatos kathe sensor
+To output einai ena array me ta concatenated signal properties kath sensor
 
 ---> normalized fourier signal with properties (fourier_std_with_props_vector)
+To input einai to path kai to output einai ena array me to kanonikopoihmeno shma kai ta properties tou kanonikopoihmenoy shmatos
+xrhsimopoei to function X_set gia na ftiaksei to shma kai meta kanonikopoei to shma kai dinei ta properties tou
+To output einai ena concatenated array me to kanonikopoihmeno shma kai me thn kanonikopoihmenh suxnothta kai ta properties tou kanonikopoihmenou shmatos
 
 '''
 
@@ -439,10 +452,21 @@ def fourier_std_with_props_vector(path):
 
 C) HARMONICS WITH NORMALIZATION 
 
+Ta duo parakatw functions leitourgoun mazi gia na parw ta harmonics kathe shmatos
+gia na parw tis armonikes xrhsimopoiw to fourier_std_vector_harmonics kai bazw san input to path kai to minimum size pou thelw na exw
+sthn perioxh pou tha epileksw na krathsw kai mou dinei tis times amplitude kai suxnothtas gia auth thn perioxh
 
 ---> fourier signal normalization harmonics (fourier_signal_standardization_harmonics)
+To input einai ena raw shma to opoio to kanonikopoiw kai meta thetw kapoia oria pou antistoixizontai se mia perioxh apo ligo prin ews ligo meta thn prwth kai  
+ligo prin ews ligo meta thn deuterh armonikh tou kanonikopoihmenou shmatos. Epishs efarmozw ena savgol filter gia na kanw pio smooth to shma
+To output einai ena array me tis times amplitude kai ena array me tis syxnothtes twn duo armonikwn
 
 ---> fourier normalized signal with harmonics(fourier_std_vector_harmonics)
+To input einai to path kai to minimum size pou krataw dhladh h elaxisth posothta timwn pou krataw gia tis duo armonikes.
+Prwta pairnw to shma kai to kanonikopoiw kai meta trexw to fourier_signal_standardization_harmonics gia na parw tis armonikes tou. 
+Epeidh kathe shma diaferei ligo, oi times max syxnothtas kai max amplitude diaferoyn ligo opote einai fysiologiko oti den pairnw ton idio arithmo datapoints se kathe armonikh opote 
+orizw ena katwtato orio to opoio an to yperbainei kapoia periptwsh tote afairw tyxaies times apo to zeygos armonikwn wste na exw osa datapoints osa to orio.
+To output einai ena array me tis times tou amplitude kai tou frequency gia tis duo prwtes armonikes tou kanonikopoihmenou shamtos
 
 '''
 
@@ -499,8 +523,6 @@ def fourier_std_vector_harmonics(path,min_size):
     
     min_size_feature_vector =[]
     min_size_freq_vector =[]
-
-    
 
     for sample in feature_vector:
         sample = np.random.choice(sample, size=min_size, replace=False)
