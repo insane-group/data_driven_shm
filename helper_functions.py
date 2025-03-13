@@ -194,6 +194,25 @@ def y_set(path,mode):
 
 2) FOURIER SIGNAL NORMALIZATION, SIGNAL PROPERTIES AND HARMONICS EXTRACTION
 
+- - - A) FOURIER SIGNAL NORMALIZATION
+
+
+- - - B) SIGNAL PROPERTIES EXTRACTION WITH NORMALIZATION
+
+
+
+- - - C) HARMONICS WITH NORMALIZATION 
+
+
+
+'''
+
+
+
+############################################################
+
+'''
+
 A) FOURIER SIGNAL NORMALIZATION
 
 ---> fourier signal standardization (fourier_signal_standardization)
@@ -203,33 +222,8 @@ A) FOURIER SIGNAL NORMALIZATION
 ---> fourier std vector (fourier_std_vector)
 
 
-B) SIGNAL PROPERTIES EXTRACTION WITH NORMALIZATION
-
----> signal properties extraction (signal_props_extract)
-
----> signal properties extraction run (run_signal_extract)
-
----> raw signal with properties (signal_with_props_vector)
-
----> properties vector (props_vector)
-
----> normalized fourier signal with properties (fourier_std_with_props_vector)
-
-
-C) HARMONICS WITH NORMALIZATION 
-
----> fourier signal normalization harmonics (fourier_signal_standardization_harmonics)
-
----> fourier normalized signal with harmonics(fourier_std_vector_harmonics)
-
-
 '''
 
-
-
-############################################################
-
-'A) FOURIER SIGNAL NORMALIZATION'
 
 
 def fourier_signal_standardization(sample):
@@ -286,8 +280,21 @@ def fourier_std_vector(path):
 
 ############################################################
 
-'B) SIGNAL PROPERTIES EXTRACTION WITH NORMALIZATION'
+'''
 
+B) SIGNAL PROPERTIES EXTRACTION WITH NORMALIZATION
+
+---> signal properties extraction (signal_props_extract)
+
+---> signal properties extraction run (run_signal_extract)
+
+---> raw signal with properties (signal_with_props_vector)
+
+---> properties vector (props_vector)
+
+---> normalized fourier signal with properties (fourier_std_with_props_vector)
+
+'''
 
 def signal_props_extract(sample):
     ########## pairnei san input sample apo fourier shma
@@ -411,7 +418,16 @@ def fourier_std_with_props_vector(path):
 
 ############################################################
 
-'C) HARMONICS WITH NORMALIZATION '
+'''
+
+C) HARMONICS WITH NORMALIZATION 
+
+
+---> fourier signal normalization harmonics (fourier_signal_standardization_harmonics)
+
+---> fourier normalized signal with harmonics(fourier_std_vector_harmonics)
+
+'''
 
 
 
@@ -503,14 +519,24 @@ def fourier_std_vector_harmonics(path,min_size):
 3) DATA TRANSFORMATIONS
 
 ---> fast fourier transform (fourier)
+pairnei san input ena shma kai ypologizei to fft tou shmatos
+dinei san output to amplitude tou shmatos kai th suxnothta
 
 ---> pwelch (pwelch)
+pairnei san input ena shma kai ypologizei to pwelch tou shmatos
+dinei san output to amplitude tou shmatos kai th suxnothta
 
 ---> psd (psd)
+pairnei san input ena shma kai ypologizei to psd tou shmatos
+dinei san output to amplitude tou shmatos kai th suxnothta
 
 ---> spectrogram (spectrogram)
+pairnei san input ena shma kai ypologizei to spectrogram tou shmatos
+dinei san output to spectrogram tou shmatos
 
 ---> wavelet (wavelet)
+pairnei san input ena shma kai ypologizei to wavelet tou shmatos
+dinei san output to wavelet
 
 '''
 
@@ -616,10 +642,17 @@ def wavelet(sample):
 4) FEATURE ENGINEERING TECHNIQUES FOR SIZE REDUCTION 
 
 ---> random forest feature elimination with cross validation (rfecv)
+pairnei san input to X_train to y_train kai to X_test kai kanei rfecv gia na brei ta kalutera features
+to output einai to X_train kai to X_test me ta kalutera features 
 
 ---> prinicipal component analysis (pca)
+pairnei san input to X_train kai to X_test kai kanei pca gia na krathsei tous grammikous sunduasmous me to megalutero variance
+to output einai to X_train me to X_test me ta principal components me to megalutero variance
 
 ---> kernel principal component analysis (kpca)
+pairnei san input to X_train kai to X_test kai prwta xrhsimopoiei enan kernel gia na kanei map ta features se ena allo feature space kai meta
+kanei pca gia na krathsei ta features me to megalutero variance
+to output einai to X_train me to X_test me ta features me tous sunduasmous me to megalutero variance
 
 '''
 
@@ -683,8 +716,14 @@ def pca(X_train,X_test):
 5) PLOTS
 
 ---> bar plots specific for regression, pairnei data sizes (bar_res_plot)
+einai specific gia ta regression runs
+pairnei san input ta modela pou etreksa kai tis times twn mape twn diaforwn megethwn tou dataset pou etreksan (min,mid,max) kai ta onomata twn montelwn pou etreksan
+kai dinei san output ta bar plots twn mape gia kathe montelo
 
 ---> parity plots it can either save or show the plot (parity_plot)
+pairnei san input to y_test to y_pred to montelo kai to mode dhladh an thelw na kanw save h aplws na dw to plot
+bgazei to parity plot tou y_test me to y_pred kai eite to kanei save eite to deixnei
+
 '''
 
 def bar_res_plot(model_list,min,mid,max,name_list):
