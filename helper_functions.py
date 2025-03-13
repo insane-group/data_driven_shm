@@ -1,11 +1,31 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-from sklearn.metrics import mean_absolute_percentage_error,mean_absolute_error
-from scipy import signal
-import pywt
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+'''
+FEATURE ENGINEERING TECHNIQUES FOR SIZE REDUCTION 
+
+---> random forest feature elimination with cross validation (rfecv)
+
+---> prinicipal component analysis (pca)
+
+---> kernel principal component analysis (kpca)
+
+'''
+
+
 
 def rfecv(X_train,y,X_test):
+
+    
+    import pandas as pd
+
     from sklearn.feature_selection import RFE
     from sklearn.tree import DecisionTreeRegressor
     from sklearn.tree import DecisionTreeClassifier
@@ -25,6 +45,11 @@ def rfecv(X_train,y,X_test):
     return X_train,X_test
 
 def pca(X_train,X_test):
+
+    import numpy as np
+    import pandas as pd
+
+
     from sklearn.decomposition import PCA
     pca = PCA(n_components=50, random_state = 42)
     pca.fit(X_train)
@@ -40,7 +65,29 @@ def pca(X_train,X_test):
     #plt.show()
     return X_train,X_test
 
-def res_plot(model_list,min,mid,max,name_list):
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+'''
+PLOTS
+
+---> bar plots specific for regression, pairnei data sizes (bar_res_plot)
+
+---> parity plots it can either save or show the plot (parity_plot)
+'''
+
+def bar_res_plot(model_list,min,mid,max,name_list):
+    
+    
+    import numpy as np
+    import matplotlib.pyplot as plt
 
     X_axis = np.arange(len(model_list)) 
 
@@ -64,17 +111,12 @@ def res_plot(model_list,min,mid,max,name_list):
     plt.legend() 
     plt.show()
 
-def single_model_result_plot(model,X_train,y,X_test,y_true):
-    plt.plot(regression_model_run(model,X_train,y,X_test,y_true)[2],marker = 'o')
-    plt.plot(regression_model_run(model,X_train,y,X_test,y_true)[3],linestyle='dashed',marker = 'o')
-    plt.xlabel("sample")
-    plt.ylabel("y value")
-    plt.title(f" Predicted and true value of samples using Linear Regression")
-    plt.legend(["y_test", "y_pred"], loc="lower right")
-    plt.show()
 
 
 def parity_plot(y_true,y_pred,model,mode):
+
+    import matplotlib.pyplot as plt
+
     plt.scatter(y_true,y_pred,color='r')
     xpoints = ypoints = plt.xlim()
     plt.plot(xpoints, ypoints)
@@ -93,15 +135,36 @@ def parity_plot(y_true,y_pred,model,mode):
         plt.show()
 
 
-def regression_model_run(model,X_train,y,X_test,y_true):
+########################################################################
 
-    y_pred = model(X_train,y,X_test)
-    #print(y_pred)
-    mape = 100*mean_absolute_percentage_error(y_true,y_pred)
-    mae = mean_absolute_error(y_true,y_pred)
-    return mae,mape,y_true,y_pred
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+
+'''
+DATA TRANSFORMATIONS
+
+---> fast fourier transform (fourier)
+
+---> pwelch (pwelch)
+
+---> psd (psd)
+
+---> spectrogram (spectrogram)
+
+---> wavelet (wavelet)
+
+'''
 
 def fourier(sample_sensor):
+
+    import numpy as np
+    
     fs = 1/1000
     #the sampling frequency is 1/(seconds in a total experiment time)
 
@@ -116,6 +179,10 @@ def fourier(sample_sensor):
 
 
 def pwelch(sample_sensor):
+
+    from scipy import signal
+
+
     fs = 1000
     (f, S)= signal.welch(sample_sensor, fs, nperseg=1024)
     return S,f
@@ -126,6 +193,10 @@ def pwelch(sample_sensor):
     #plt.show()
 
 def psd(sample_sensor):
+
+    from scipy import signal
+    
+
     fs = 1000
     # f contains the frequency components
     # S is the PSD
@@ -139,6 +210,10 @@ def psd(sample_sensor):
     #plt.show()
 
 def spectrogram(sample):
+
+    from scipy import signal
+
+
     fs = 1000
     f, t, Sxx = signal.spectrogram(sample, fs)
     #plt.pcolormesh(t, f, Sxx, shading='gouraud')
@@ -148,6 +223,10 @@ def spectrogram(sample):
     return Sxx
 
 def wavelet(sample):
+
+    import pywt
+    import numpy as np
+
     fs = 1000  # Sampling frequency
     t = np.linspace(0, 1, fs, endpoint=False)  # Time vector
     signal = sample
@@ -169,23 +248,113 @@ def wavelet(sample):
     #plt.tight_layout()
     #plt.show()
 
+########################################################################
 
-################### den paizei kala thelei ftiaksimo 18/12/2024###################
-def signal_data(sample):
-    from scipy import signal
-    high_peaks, high_peaks_properties = signal.find_peaks(sample,prominence=0.08)
-    low_peaks, low_peaks_properties = signal.find_peaks(sample,distance = 500,height=(0.005,0.008))
-    dx = low_peaks - high_peaks
-    dy = high_peaks_properties['prominences'] - low_peaks_properties['peak_heights']
-    signal_props = [high_peaks_properties['prominences'],
-                    high_peaks,
-                    low_peaks_properties['peak_heights'],
-                    low_peaks,
-                    dx,
-                    dy
-                    ]
-    return signal_props
-###############################################################################################
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+'''
+
+FOURIER SIGNAL NORMALIZATION, SIGNAL PROPERTIES AND HARMONICS EXTRACTION
+
+A) FOURIER SIGNAL NORMALIZATION
+
+---> fourier signal standardization (fourier_signal_standardization)
+
+---> fourier vector maker (fourier_vector_maker)
+
+---> fourier std vector (fourier_std_vector)
+
+
+B) SIGNAL PROPERTIES EXTRACTION WITH NORMALIZATION
+
+---> signal properties extraction (signal_props_extract)
+
+---> signal properties extraction run (run_signal_extract)
+
+---> raw signal with properties (signal_with_props_vector)
+
+---> properties vector (props_vector)
+
+---> normalized fourier signal with properties (fourier_std_with_props_vector)
+
+
+C) HARMONICS WITH NORMALIZATION 
+
+---> fourier signal normalization harmonics (fourier_signal_standardization_harmonics)
+
+---> fourier normalized signal with harmonics(fourier_std_vector_harmonics)
+
+
+'''
+
+
+
+############################################################
+
+'A) FOURIER SIGNAL NORMALIZATION'
+
+
+def fourier_signal_standardization(sample):
+    import numpy as np
+    
+
+    ########## pairnei san input sample apo raw shma
+    ####### dinei output to amp kai to freq tou kanonikopoihmenou shmatos
+    amp= fourier(sample)[0]
+    freq= fourier(sample)[1]
+
+    amp_list =[]
+    freq_list =[]
+    bound = int(0.5*len(amp))
+    #max_amp = max(amp)
+    max_amp = -max(amp)
+    max_freq = abs(freq[amp.argmax()])
+
+    for i in range(0,bound):
+        amp_list.append(amp[i]/max_amp)
+        #amp_list.append(1/(amp[i]/max_amp))
+        freq_list.append(freq[i]/max_freq)
+
+    amp = np.array(amp_list)
+    freq = np.array(freq_list)
+    return amp,freq
+
+
+def fourier_vector_maker(data):
+    ########## pairnei san input data
+    ####### dinei output vector kanonikopoihmeno sample me freq
+    feature_vector=[]
+    freq_vector =[]
+    for sample in data:
+        feature_vector.append(fourier_signal_standardization(sample)[0])
+        freq_vector.append(fourier_signal_standardization(sample)[1])
+    return feature_vector,freq_vector
+
+
+def fourier_std_vector(path):
+
+    import numpy as np
+    
+    ########## pairnei san input path
+    ####### dinei output to std fourier shma
+    from file_opener import X_set
+    X, s2,s3,s4,none_freqs = X_set(path,'none')
+    vector = np.concatenate(( fourier_vector_maker(s2)[0],fourier_vector_maker(s3)[0],fourier_vector_maker(s4)[0],fourier_vector_maker(s4)[1]),axis=1)
+    return vector
+
+
+
+############################################################
+
+############################################################
+
+'B) SIGNAL PROPERTIES EXTRACTION WITH NORMALIZATION'
 
 
 def signal_props_extract(sample):
@@ -205,8 +374,6 @@ def signal_props_extract(sample):
             second_bound = i
         if freq[i] ==0:
             zero_bound = i
-
-
 
     first_amp =[]
     for i in range(zero_bound,first_bound):
@@ -260,51 +427,6 @@ def signal_props_extract(sample):
     
     return props
 
-
-def fourier_signal_standardization(sample):
-    ########## pairnei san input sample apo raw shma
-    ####### dinei output to amp kai to freq tou kanonikopoihmenou shmatos
-    amp= fourier(sample)[0]
-    freq= fourier(sample)[1]
-
-    amp_list =[]
-    freq_list =[]
-    bound = int(0.5*len(amp))
-    #max_amp = max(amp)
-    max_amp = -max(amp)
-    max_freq = abs(freq[amp.argmax()])
-
-    for i in range(0,bound):
-        if i>150 and i<200 :
-            amp_list.append(amp[i]/max_amp)
-            #amp_list.append(1/(amp[i]/max_amp))
-            freq_list.append(freq[i]/max_freq)
-
-    amp = np.array(amp_list)
-    freq = np.array(freq_list)
-    return amp,freq
-
-
-def fourier_std_vector(path):
-    ########## pairnei san input path
-    ####### dinei output to std fourier shma
-    from file_opener import X_set
-    X, s2,s3,s4,none_freqs = X_set(path,'none')
-    vector = np.concatenate(( fourier_vector_maker(s2)[0],fourier_vector_maker(s3)[0],fourier_vector_maker(s4)[0],fourier_vector_maker(s4)[1]),axis=1)
-    return vector
-
-
-def fourier_vector_maker(data):
-    ########## pairnei san input data
-    ####### dinei output vector kanonikopoihmeno sample me freq
-    feature_vector=[]
-    freq_vector =[]
-    for sample in data:
-        feature_vector.append(fourier_signal_standardization(sample)[0])
-        freq_vector.append(fourier_signal_standardization(sample)[1])
-    return feature_vector,freq_vector
-
-
 def run_signal_extract(data):
     ########## pairnei san input raw shma
     ####### dinei output ta signal properties tou shmatos
@@ -315,6 +437,9 @@ def run_signal_extract(data):
     return feature_vector
 
 def signal_with_props_vector(path,transformation):
+    
+    import numpy as np
+    
     ########## pairnei san input path
     ####### dinei output ta signal properties tou shmatos me to shma me ton metasxhmatismo
     from file_opener import X_set
@@ -327,6 +452,10 @@ def signal_with_props_vector(path,transformation):
 
 
 def props_vector(path):
+
+    import numpy as np
+    
+    
     ########## pairnei san input path
     ####### dinei output ta signal properties tou shmatos
     from file_opener import X_set
@@ -335,6 +464,9 @@ def props_vector(path):
     return vector
 
 def fourier_std_with_props_vector(path):
+
+    import numpy as np
+    
     ########## pairnei san input path
     ####### dinei output ta signal properties tou shmatos me to shma me to kanonikopoihmeno fourier
     from file_opener import X_set
@@ -343,28 +475,51 @@ def fourier_std_with_props_vector(path):
     prop_vector = np.concatenate(( run_signal_extract(s2),run_signal_extract(s3),run_signal_extract(s4)),axis=1)
     vector = np.concatenate((vector,prop_vector),axis=1)
     return vector
+############################################################
+
+############################################################
+
+'C) HARMONICS WITH NORMALIZATION '
 
 
 
+def fourier_signal_standardization_harmonics(sample):
 
-def x_y_unwanted_remover(sensor2,sensor3,sensor4,y):
-    index_remove_list =[]
-    for i in range(0,len(y)):
-        if y[i] =='clean' or y[i] =='ola':
-            index_remove_list.append(i)
-    index_remove_list.reverse()
+    import numpy as np
 
-    for i in index_remove_list:
-        del sensor2[i]
-        del sensor3[i]
-        del sensor4[i]
-        y =  y.drop([i])
-    X = np.concatenate((sensor2,sensor3,sensor4),axis=1)
-    y = np.array(y)
-    return X,y
+    
+    ########## pairnei san input sample apo raw shma
+    ####### dinei output to amp kai to freq tou kanonikopoihmenou shmatos
+    amp= fourier(sample)[0]
+    freq= fourier(sample)[1]
+
+    amp_list =[]
+    freq_list =[]
+    bound = int(0.5*len(amp))
+    max_amp = -max(amp)
+    max_freq = abs(freq[amp.argmax()])
+
+    #
+    for i in range(0,bound):
+        if freq[i]/max_freq>0.8 and freq[i]/max_freq<1.2 or freq[i]/max_freq>1.8 and freq[i]/max_freq<2.2:
+            amp_list.append(amp[i]/max_amp)
+            freq_list.append(freq[i]/max_freq)
+    
+    freq = np.array(freq_list)
+    amp = np.array(amp_list)
+    from scipy.signal import savgol_filter
+    
+    amp = savgol_filter(amp,5,3)
+
+    return amp,freq
+
 
 
 def fourier_std_vector_harmonics(path,min_size):
+
+    import numpy as np
+    
+
     ########## pairnei san input path
     ####### dinei output vector kanonikopoihmeno sample me freq
     from file_opener import X_set 
@@ -398,28 +553,222 @@ def fourier_std_vector_harmonics(path,min_size):
     return vector
 
 
-def fourier_signal_standardization_harmonics(sample):
-    ########## pairnei san input sample apo raw shma
-    ####### dinei output to amp kai to freq tou kanonikopoihmenou shmatos
-    amp= fourier(sample)[0]
-    freq= fourier(sample)[1]
 
-    amp_list =[]
-    freq_list =[]
-    bound = int(0.5*len(amp))
-    max_amp = -max(amp)
-    max_freq = abs(freq[amp.argmax()])
+############################################################
 
-    #
-    for i in range(0,bound):
-        if freq[i]/max_freq>0.8 and freq[i]/max_freq<1.2 or freq[i]/max_freq>1.8 and freq[i]/max_freq<2.2:
-            amp_list.append(amp[i]/max_amp)
-            freq_list.append(freq[i]/max_freq)
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+'''
+X AND Y SET CREATORS
+
+---> x set creator (X_set)
+
+to x set pairnei san input path kai to eidos tou transformation
+bgazei 5 outputs
+to prwto output einai to concatenated amplitude ten shmatwn kai twv triwn sensors
+to deutero trito kai tetarto output einai to amplitude tou shmatos tou kathe sensor
+to pempto output einai h suxnothta 
+
+---> y set creator (classification and regression) (y_set)
+
+to y_set pairnei san input to path kai to mode(classification/regression)
+bgazei san output to eidos tou defect gia kathe sample sto classification
+kai to damage percentage tou defect sto regression
+
+'''
+
+def X_set(path,transformation):
+
+    import os
+    import glob
+    import numpy as np
+    import pandas as pd
+
+
+    sensor_data_list = []
+    name_list = []
+
+    # gia kathe filename sto path pou tou exw dwsei afairei to .csv wste meta na mporei na diabasei ton arithmo
+    for filename in sorted(glob.glob(os.path.join(path , "data*"))):
+        filename = filename.removesuffix('.csv')
+        name_list.append(filename)
+
+    #apo kathe filename krataei mono ton arithmo sto telos kai me auton ton arithmo ftiaxeni th nea sthlh index number
+    sensor_data = pd.DataFrame({'name':name_list})
+    sensor_data['sensor_index_number'] = [int(i.split('_')[-1]) for i in sensor_data['name']]
+
+    #kanw sort th lista basei tou index number
+    sensor_data = sensor_data.sort_values(by=['sensor_index_number'])
+
+    suffix='.csv'
+    new_names=[]
+
+    #se kathe filename sth lista pou exei ginei sort prosthetei to .csv wste na mporei na to diabasei
+    for filename in sensor_data['name']:
+        filename = filename+suffix
+        new_names.append(filename)
+
+    #anoigei ta arxeia apo kathe path kai ftiaxnei th lista me tis metrhseis
+
+    for filename in new_names:
+        df = pd.read_csv(filename,sep=' |,', engine='python').dropna()
+        sensor_data_list.append(df)
+
+    freq_list = []
+    power_spectrum_list = []
+    sensor_names = ['s2','s3','s4']
+    for sensor in sensor_names:
+        #gia kathe sample sensora dld gia kathe xronoseira (pou prokuptei apo to shma pou lambanei o sensoras efarmozo transformations
+        for i in range(0,len(sensor_data_list)):
+            sample_sensor =sensor_data_list[i][sensor]
+            if transformation == 'fourier':
+                power_spectrum = fourier(sample_sensor)[0]
+            elif transformation == 'psd':
+                power_spectrum = psd(sample_sensor)[0]
+            elif transformation == 'pwelch':
+                power_spectrum = pwelch(sample_sensor)[0]
+            elif transformation == 'wavelet':
+                power_spectrum = wavelet(sample_sensor)
+            elif transformation == 'none':
+                power_spectrum = sample_sensor
+            elif transformation == 'spectrogram':
+                power_spectrum = spectrogram(sample_sensor)
+            power_spectrum_list.append(power_spectrum)  
+
+    sensor2_vector = []
+    sensor3_vector = []
+    sensor4_vector = []
+
+    bound_1 = int(len(power_spectrum_list)/3)
+    bound_2 = int(2*len(power_spectrum_list)/3)
+    bound_3 = int(len(power_spectrum_list))
+
+    if transformation == 'fourier':
+        for i in range(0,bound_1):
+            freq_list.append(fourier(sample_sensor)[1])
+
+    for i in range(0,bound_1):
+        sensor2_vector.append(power_spectrum_list[i])
+        
+    for i in range(bound_1,bound_2):
+        sensor3_vector.append(power_spectrum_list[i])
+        
+    for i in range(bound_2,bound_3):
+        sensor4_vector.append(power_spectrum_list[i])
+        
+    X = np.concatenate((sensor2_vector,sensor3_vector,sensor4_vector),axis=1)
+    return X,sensor2_vector,sensor3_vector,sensor4_vector,freq_list
+
+
+def y_set(path,mode):
     
-    freq = np.array(freq_list)
-    amp = np.array(amp_list)
-    from scipy.signal import savgol_filter
-    
-    amp = savgol_filter(amp,5,3)
+    import numpy as np
+    import pandas as pd
+    import os
+    import glob
 
-    return amp,freq
+    #### paizei mono gia to balanced data###
+    dmg_list = []
+    name_list = []
+    case_list = []
+    defect_list =[]
+    # gia kathe file name sto path pou exw dwsei afairei to .csv kai afairei nan values kai kanei mia lista mono me to damage percentage
+    for filename in glob.glob(os.path.join(path , "meta*")):
+        df = pd.read_csv(filename,sep=' |,', engine='python')
+        dmg_perc = df['Damage_percentage']
+        case = df['caseStudey'][0]
+        dmg_perc = dmg_perc[0]
+        dmg_list.append(dmg_perc)
+        filename = filename.removesuffix('.csv')
+        
+        df_defect = df['DamageLayer1'][0] + df['DamageLayer3'][0] + df['DamageLayer5'][0]
+        dm_defect = df['DamageLayer1'][1] + df['DamageLayer3'][1] + df['DamageLayer5'][1]
+        dd_defect = df['DamageLayer2'][0] + df['DamageLayer4'][0]
+        
+        if df_defect ==0 and dm_defect ==0 and dd_defect ==0:
+            defect_list.append('clean')
+        elif df_defect !=0 and dm_defect !=0 and dd_defect !=0:
+            defect_list.append('ola')
+        elif df_defect !=0 and dm_defect ==0 and dd_defect ==0:
+            defect_list.append('df')
+        elif df_defect ==0 and dm_defect !=0 and dd_defect ==0:
+            defect_list.append('dm')
+        elif df_defect ==0 and dm_defect ==0 and dd_defect !=0:
+            defect_list.append('dd')
+        else:
+            defect_list.append('ola')
+        
+        name_list.append(filename)
+        case_list.append(case)
+
+    # ftiaxnei ena dataframe me to damage percentage kai prosthetei to index number kai kanei sort basei autou 
+    dmg_data = pd.DataFrame({'dmg':dmg_list,'damage_file_name':name_list,'caseStudey':case_list,'defect':defect_list})
+    dmg_data['dmg_index_number'] = [int(i.split('_')[-1]) for i in dmg_data['damage_file_name']]
+    dmg_data = dmg_data.sort_values(by=['dmg_index_number'])
+
+    if mode == 'classification':
+        return dmg_data['defect'],
+    if mode =='regression':
+        return dmg_data['dmg']
+    
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+
+def single_model_result_plot(model,X_train,y,X_test,y_true):
+
+    import matplotlib.pyplot as plt
+    plt.plot(regression_model_run(model,X_train,y,X_test,y_true)[2],marker = 'o')
+    plt.plot(regression_model_run(model,X_train,y,X_test,y_true)[3],linestyle='dashed',marker = 'o')
+    plt.xlabel("sample")
+    plt.ylabel("y value")
+    plt.title(f" Predicted and true value of samples using Linear Regression")
+    plt.legend(["y_test", "y_pred"], loc="lower right")
+    plt.show()
+
+
+def regression_model_run(model,X_train,y,X_test,y_true):
+
+    from sklearn.metrics import mean_absolute_percentage_error,mean_absolute_error
+
+    y_pred = model(X_train,y,X_test)
+    #print(y_pred)
+    mape = 100*mean_absolute_percentage_error(y_true,y_pred)
+    mae = mean_absolute_error(y_true,y_pred)
+    return mae,mape,y_true,y_pred
+
+
+def x_y_unwanted_remover(sensor2,sensor3,sensor4,y):
+
+    import numpy as np
+    
+    index_remove_list =[]
+    for i in range(0,len(y)):
+        if y[i] =='clean' or y[i] =='ola':
+            index_remove_list.append(i)
+    index_remove_list.reverse()
+
+    for i in index_remove_list:
+        del sensor2[i]
+        del sensor3[i]
+        del sensor4[i]
+        y =  y.drop([i])
+    X = np.concatenate((sensor2,sensor3,sensor4),axis=1)
+    y = np.array(y)
+    return X,y
