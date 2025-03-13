@@ -689,7 +689,7 @@ pairnei san input to X_train kai to X_test kai kanei pca gia na krathsei tous gr
 to output einai to X_train me to X_test me ta principal components me to megalutero variance
 
 ---> kernel principal component analysis (kpca)
-pairnei san input to X_train kai to X_test kai prwta xrhsimopoiei enan kernel gia na kanei map ta features se ena allo feature space kai meta
+pairnei san input to X_train kai to X_test kai ton kernel kai prwta xrhsimopoiei enan kernel gia na kanei map ta features se ena allo feature space kai meta
 kanei pca gia na krathsei ta features me to megalutero variance
 to output einai to X_train me to X_test me ta features me tous sunduasmous me to megalutero variance
 
@@ -724,9 +724,8 @@ def pca(X_train,X_test):
 
     import numpy as np
     import pandas as pd
-
-
     from sklearn.decomposition import PCA
+
     pca = PCA(n_components=50, random_state = 42)
     pca.fit(X_train)
     X_train = pca.transform(X_train)
@@ -739,6 +738,21 @@ def pca(X_train,X_test):
     #plt.xlabel('Principal Component')
     #plt.title('Scree Plot')
     #plt.show()
+    return X_train,X_test
+
+
+def kpca(X_train,X_test,input_kernel):
+
+    import numpy as np
+    import pandas as pd
+    from sklearn.decomposition import KernelPCA   
+
+    pca = KernelPCA(kernel=input_kernel,n_components=30, random_state = 42)
+    pca.fit(X_train)
+    X_train = pca.transform(X_train)
+    X_train = pd.DataFrame(X_train)
+    X_test = pca.transform(X_test)
+    X_test = pd.DataFrame(X_test)
     return X_train,X_test
 
 ########################################################################
