@@ -12,6 +12,8 @@ CONTENTS
 
 5)PLOTS
 
+6)KERNELS
+
 '''
 
 
@@ -269,7 +271,7 @@ def fourier_nrm_vector(path):
     
     ########## pairnei san input path
     ####### dinei output to nrm fourier shma
-    from file_opener import X_set
+    from helper_functions import X_set
     X, s2,s3,s4,none_freqs = X_set(path,'none')
     vector = np.concatenate(( fourier_vector_maker(s2)[0],fourier_vector_maker(s3)[0],fourier_vector_maker(s4)[0],fourier_vector_maker(s4)[1]),axis=1)
     return vector
@@ -406,7 +408,7 @@ def signal_with_props_vector(path,transformation):
     
     ########## pairnei san input path
     ####### dinei output ta signal properties tou shmatos me to shma me ton metasxhmatismo
-    from file_opener import X_set
+    from helper_functions import X_set
     X, s2,s3,s4,freqs = X_set(path,transformation)
     vector = np.concatenate((s2,s3,s4,freqs),axis=1)
     X, s2,s3,s4,none_freqs = X_set(path,'none')
@@ -422,7 +424,7 @@ def props_vector(path):
     
     ########## pairnei san input path
     ####### dinei output ta signal properties tou shmatos
-    from file_opener import X_set
+    from helper_functions import X_set
     X, s2,s3,s4,none_freqs = X_set(path,'none')
     vector = np.concatenate(( run_signal_extract(s2),run_signal_extract(s3),run_signal_extract(s4)),axis=1)
     return vector
@@ -433,7 +435,7 @@ def fourier_std_with_props_vector(path):
     
     ########## pairnei san input path
     ####### dinei output ta signal properties tou shmatos me to shma me to kanonikopoihmeno fourier
-    from file_opener import X_set
+    from helper_functions import X_set
     vector = fourier_nrm_vector(path)
     X, s2,s3,s4,none_freqs = X_set(path,'none')
     prop_vector = np.concatenate(( run_signal_extract(s2),run_signal_extract(s3),run_signal_extract(s4)),axis=1)
@@ -506,7 +508,7 @@ def fourier_nrm_vector_harmonics(path,min_size):
 
     ########## pairnei san input path
     ####### dinei output vector kanonikopoihmeno sample me freq
-    from file_opener import X_set 
+    from helper_functions import X_set 
     data= X_set(path,'none')[0]
     feature_vector=[]
     freq_vector =[]
@@ -741,7 +743,24 @@ def kpca(X_train,X_test,input_kernel):
     import numpy as np
     import pandas as pd
     from sklearn.decomposition import KernelPCA   
+    from sklearn.gaussian_process.kernels import ExpSineSquared,Product,RationalQuadratic,RBF
 
+    periodic= ExpSineSquared()
+    locally_periodic = Product(periodic,RBF())
+    rational_locally_periodic = Product(periodic,RationalQuadratic())
+
+
+    if input_kernel =='periodic':
+        input_kernel = periodic
+    if input_kernel =='locally_periodic':
+        input_kernel = locally_periodic
+    if input_kernel =='rbf':
+        input_kernel = RBF()
+    if input_kernel =='rational_quadratic':
+        input_kernel = RationalQuadratic()
+    if input_kernel =='rational_locally_periodic':
+        input_kernel = rational_locally_periodic
+    
     pca = KernelPCA(kernel=input_kernel,n_components=30, random_state = 42)
     pca.fit(X_train)
     X_train = pca.transform(X_train)
@@ -772,6 +791,10 @@ kai dinei san output ta bar plots twn mape gia kathe montelo
 pairnei san input to y_test to y_pred to montelo kai to mode dhladh an thelw na kanw save h aplws na dw to plot
 bgazei to parity plot tou y_test me to y_pred kai eite to kanei save eite to deixnei
 
+
+---> 3d scatter plot for classification (scatterplot_3d_classification)
+pairnei san input to x kai to y kai bgazei ena 3d scatter plot twn triwn prwtn features tou x me tis antistoixes times y
+oi times tou y einai to xrwma tou kathe shmeiou
 '''
 
 def bar_res_plot(model_list,min,mid,max,name_list):
@@ -825,6 +848,52 @@ def parity_plot(y_true,y_pred,model,mode):
     elif mode =='show':
         plt.show()
 
+def scatterplot_3d_classification(X_data,y_data):
+    import matplotlib.pyplot as plt
+    import numpy as np
+    y_data = np.array(y_data)
+    fig = plt.figure()
+    plt.clf()
+    ax = fig.add_subplot(projection='3d')
+    x,y,z = X_data[0],X_data[1],X_data[2]
+    c=[]
+    for i in range(0,len(y_data)):
+        if y_data[i] == 'dm':c.append(0)
+        if y_data[i] == 'df':c.append(1)
+        if y_data[i] == 'dd':c.append(2)
+        if y_data[i] == 'ola':c.append(3)
+        if y_data[i] == 'clean':c.append(4)
+
+    img = ax.scatter(x, y, z,c=c, cmap=plt.hot())
+    fig.colorbar(img)
+    ax.set_xlabel('X Label')
+    ax.set_ylabel('Y Label')
+    ax.set_zlabel('Z Label')
+    plt.show()
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+########################################################################
+
+
+
+'''
+
+6)KERNELS
+
+
+
+
+'''
+
+
+
 
 ########################################################################
 
@@ -841,6 +910,50 @@ def parity_plot(y_true,y_pred,model,mode):
 
 
 
+def decision_bounds_plot(X_train,y_train,model):
+
+    '''
+    thelei oi classes na einai arithmoi
+    '''
+
+    import matplotlib.pyplot as plt
+    from sklearn.inspection import DecisionBoundaryDisplay
+
+    display = DecisionBoundaryDisplay.from_estimator(model,X_train,response_method='predict',xlabel='feature_1', ylabel='feature_2',alpha=0.5)
+
+
+    display.ax_.scatter(X_train[0],X_train[1],c=y_train, edgecolor="black")
+    plt.show()
+
+
+def cross_val_loo(model,X,y):
+    from sklearn.model_selection import LeaveOneOut,cross_val_score
+    import numpy as np
+    cv = LeaveOneOut()
+    scores = cross_val_score(model, X, y, scoring='accuracy', cv=cv, n_jobs=-1)
+    return np.absolute(scores)
+
+
+
+
+
+
+
+
+
+
+
+########################################################
+########################################################
+########################################################
+########################################################
+
+''''
+
+
+GIA PETAMA TA BLEPW PRIN TA SBHSW
+
+'''
 def single_model_result_plot(model,X_train,y,X_test,y_true):
 
     import matplotlib.pyplot as plt
