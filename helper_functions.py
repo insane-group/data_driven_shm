@@ -39,9 +39,8 @@ to pempto output einai h suxnothta
 
 ---> y set creator (classification and regression) (y_set)
 
-to y_set pairnei san input to path kai to mode(classification/regression)
-bgazei san output to eidos tou defect gia kathe sample sto classification
-kai to damage percentage tou defect sto regression
+to y_set pairnei san input to path kai bgazei san output to dataframe me ola ta stoixeia gia 
+thn astoxia to column 'defect' exei to eidos tou defecr kai to column 'dmg' exei to damage percentage
 
 '''
 
@@ -128,7 +127,7 @@ def X_set(path,transformation):
     return X,sensor2_vector,sensor3_vector,sensor4_vector,freq_list
 
 
-def y_set(path,mode):
+def y_set(path):
     
     import numpy as np
     import pandas as pd
@@ -173,11 +172,7 @@ def y_set(path,mode):
     dmg_data = pd.DataFrame({'dmg':dmg_list,'damage_file_name':name_list,'caseStudey':case_list,'defect':defect_list})
     dmg_data['dmg_index_number'] = [int(i.split('_')[-1]) for i in dmg_data['damage_file_name']]
     dmg_data = dmg_data.sort_values(by=['dmg_index_number'])
-
-    if mode == 'classification':
-        return dmg_data['defect'],
-    if mode =='regression':
-        return dmg_data['dmg']
+    return dmg_data
     
 ########################################################################
 
@@ -211,19 +206,19 @@ def y_set(path,mode):
 A) FOURIER SIGNAL NORMALIZATION
 
 ta tria parakatw functions leitourgoun mazi
-gia na parw to kanonikopoihmeno shma xrhsimopoiw to fourier std vector
+gia na parw to kanonikopoihmeno shma xrhsimopoiw to fourier nrm vector
 to opoio pairnei san input to path kai to output einai to kanonikopoihmeno shma
 
----> fourier signal standardization (fourier_signal_standardization)
+---> fourier signal normalization (fourier_signal_normalization)
 To input einai ena sample shmatos kai ypologizei to fft kai kanonikopoei ws pros th megisth syxnothta
 dhladh th syxnothta diegershs. To amplitude einai kanonikopoihmeno ws pros to amplitude sth megisth syxnothta kai 
 h suxnothta einai kanonikopoihmenh ws pros th syxnothta diegershs
 
 ---> fourier vector maker (fourier_vector_maker)
-Pairnei san input data (mia lista h array apo shmata) kai efarmozei th sunarthsh fourier_signal_standardization kai dinei to kanonikopoihmeno shma
+Pairnei san input data (mia lista h array apo shmata) kai efarmozei th sunarthsh fourier_signal_normalization kai dinei to kanonikopoihmeno shma
 to input einai ta data kai ta output einai mia lista me to kanonikopoihmeno amplitude kai mia lista me thn kanonikopoihmenh syxnothta
 
----> fourier std vector (fourier_std_vector)
+---> fourier nrm vector (fourier_nrm_vector)
 To input einai to path kai efarmozei thn sunarthsh fourier_vector_maker gia olous tous sensors kathe shmatos sto path.
 To input einai to path kai to output einai ta concatenated normalized shmata olwn twn samples sto path
 
@@ -231,7 +226,7 @@ To input einai to path kai to output einai ta concatenated normalized shmata olw
 
 
 
-def fourier_signal_standardization(sample):
+def fourier_signal_normalization(sample):
     import numpy as np
     
 
@@ -263,17 +258,17 @@ def fourier_vector_maker(data):
     feature_vector=[]
     freq_vector =[]
     for sample in data:
-        feature_vector.append(fourier_signal_standardization(sample)[0])
-        freq_vector.append(fourier_signal_standardization(sample)[1])
+        feature_vector.append(fourier_signal_normalization(sample)[0])
+        freq_vector.append(fourier_signal_normalization(sample)[1])
     return feature_vector,freq_vector
 
 
-def fourier_std_vector(path):
+def fourier_nrm_vector(path):
 
     import numpy as np
     
     ########## pairnei san input path
-    ####### dinei output to std fourier shma
+    ####### dinei output to nrm fourier shma
     from file_opener import X_set
     X, s2,s3,s4,none_freqs = X_set(path,'none')
     vector = np.concatenate(( fourier_vector_maker(s2)[0],fourier_vector_maker(s3)[0],fourier_vector_maker(s4)[0],fourier_vector_maker(s4)[1]),axis=1)
@@ -334,7 +329,7 @@ def signal_props_extract(sample):
     
     #### auta ta bounds allazoun analoga me ta shmeia poy emfanizetai to megisto amp
     ### gia kanoniko shma ta oria einai freq = 0 , freq = 200 kai freq = 400 Khz
-    ### gia standardized shma einia freq = 0 , 1.3<=freq<=1.5  kai 2.9<=freq<=3.2 
+    ### gia normalized shma einia freq = 0 , 1.3<=freq<=1.5  kai 2.9<=freq<=3.2 
     for i in range(0,len(freq)):
 
         if freq[i] >= 1.3 and freq[i] <= 1.5:
@@ -401,7 +396,7 @@ def run_signal_extract(data):
     ####### dinei output ta signal properties tou shmatos
     feature_vector=[]
     for sample in data:
-        sample = fourier_signal_standardization(sample)
+        sample = fourier_signal_normalization(sample)
         feature_vector.append(signal_props_extract(sample))
     return feature_vector
 
@@ -439,7 +434,7 @@ def fourier_std_with_props_vector(path):
     ########## pairnei san input path
     ####### dinei output ta signal properties tou shmatos me to shma me to kanonikopoihmeno fourier
     from file_opener import X_set
-    vector = fourier_std_vector(path)
+    vector = fourier_nrm_vector(path)
     X, s2,s3,s4,none_freqs = X_set(path,'none')
     prop_vector = np.concatenate(( run_signal_extract(s2),run_signal_extract(s3),run_signal_extract(s4)),axis=1)
     vector = np.concatenate((vector,prop_vector),axis=1)
@@ -472,7 +467,7 @@ To output einai ena array me tis times tou amplitude kai tou frequency gia tis d
 
 
 
-def fourier_signal_standardization_harmonics(sample):
+def fourier_signal_normalization_harmonics(sample):
 
     import numpy as np
 
@@ -504,7 +499,7 @@ def fourier_signal_standardization_harmonics(sample):
 
 
 
-def fourier_std_vector_harmonics(path,min_size):
+def fourier_nrm_vector_harmonics(path,min_size):
 
     import numpy as np
     
@@ -516,8 +511,8 @@ def fourier_std_vector_harmonics(path,min_size):
     feature_vector=[]
     freq_vector =[]
     for sample in data:
-        feature_vector.append(fourier_signal_standardization_harmonics(sample)[0])
-        freq_vector.append(fourier_signal_standardization_harmonics(sample)[1])
+        feature_vector.append(fourier_signal_normalization_harmonics(sample)[0])
+        freq_vector.append(fourier_signal_normalization_harmonics(sample)[1])
     #### epeidh exw balei thn if sth sunarthsh fourier kathe sample mesa sto feature vector den exei idio megethos
     ### prepei kathe sample na exei idio megethos gia auto stis periptwseis pou exw parapanw times afairw kapoies
     
