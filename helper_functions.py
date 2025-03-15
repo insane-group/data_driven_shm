@@ -843,6 +843,13 @@ def bar_res_plot(model_list,min,mid,max,name_list):
 
 
 def parity_plot(y_true,y_pred,model,mode):
+    
+    
+    '''
+    prepei to model na einai ws function
+    
+
+    '''
 
     import matplotlib.pyplot as plt
 
@@ -970,6 +977,22 @@ check gia na ta prosthesw
 
 
 
+def pickle_saver(model):
+    
+    '''
+    prepei to model na einai ws function
+    
+    '''
+    
+    import pickle
+
+    with open(f'{model.__name__}_pickle','wb') as f:
+        pickle.dump(model,f)
+
+def pickle_opener(model):
+    import pickle
+    with open(f'{model.__name__}_pickle','rb') as f:
+        return pickle.load(f)
 
 
 def decision_bounds_plot(X_train,y_train,model):
@@ -987,15 +1010,23 @@ def decision_bounds_plot(X_train,y_train,model):
 
 
 def cross_val_loo(model,X,y):
+    '''
+    regression --> scoring = 'neg_mean_absolute_percentage_error'
+    classification ---> scoring = 'accuracy'
+    '''
     from sklearn.model_selection import LeaveOneOut,cross_val_score
     import numpy as np
     cv = LeaveOneOut()
-    scores = cross_val_score(model, X, y, scoring='accuracy', cv=cv, n_jobs=-1)
+    scores = cross_val_score(model, X, y, scoring='neg_mean_absolute_percentage_error', cv=cv, n_jobs=-1)
     return np.absolute(scores)
 
 
 
 def grid_search_loo(model,X_train,y_train):
+    '''
+    ftiaxnw tis parametrous gia to modelo pou tha dwsw sto input
+    
+    '''
     from sklearn.model_selection import GridSearchCV,LeaveOneOut
     # defining parameter range 
     param_grid = {'C': [0.1, 1, 10, 100, 1000], 
