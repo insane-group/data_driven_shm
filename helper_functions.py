@@ -982,8 +982,6 @@ def decision_bounds_plot(X_train,y_train,model):
     from sklearn.inspection import DecisionBoundaryDisplay
 
     display = DecisionBoundaryDisplay.from_estimator(model,X_train,response_method='predict',xlabel='feature_1', ylabel='feature_2',alpha=0.5)
-
-
     display.ax_.scatter(X_train[0],X_train[1],c=y_train, edgecolor="black")
     plt.show()
 
@@ -997,7 +995,20 @@ def cross_val_loo(model,X,y):
 
 
 
+def grid_search_loo(model,X_train,y_train):
+    from sklearn.model_selection import GridSearchCV,LeaveOneOut
+    # defining parameter range 
+    param_grid = {'C': [0.1, 1, 10, 100, 1000], 
+                'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 
+                'kernel': ['rbf','sigmoid','poly']} 
 
+    grid = GridSearchCV(model, param_grid, refit = True, cv=LeaveOneOut(),verbose = False) 
+
+    # fitting the model for grid search 
+    grid.fit(X_train, y_train) 
+
+    # print best parameter after tuning 
+    print(grid.best_params_)
 
 
 
