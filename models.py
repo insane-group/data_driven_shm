@@ -79,8 +79,8 @@ def linear_regression(X_train,y,X_test):
     lr = LinearRegression()
     lr.fit(X_train,y)
     y_pred = lr.predict(X_test)
-    with open('lr_pickle','wb') as f:
-        pickle.dump(lr,f)
+    #with open('lr_pickle','wb') as f:
+    #    pickle.dump(lr,f)
     return y_pred
 
 
@@ -104,8 +104,28 @@ def knn_dtw_classifier(X_train,y,X_test):
     y_pred = knn.predict(X_test)
     return y_pred
 
-    
+
+def svc(X_train,y,X_test):
+    from sklearn.svm import SVC
+    svm = SVC(C=100,gamma=0.001,kernel='rbf')
+    svm.fit(X_train,y)
+    y_pred = svm.predict(X_test)
+    return y_pred
+
+
+def logistic_regression(X_train,y,X_test):
+    from sklearn.linear_model import LogisticRegression
+    lr = LogisticRegression()
+    lr.fit(X_train,y)
+    y_pred = lr.predict(X_test)
+    return y_pred
+
 def mlp(X_train,y,X_test):
+
+    '''
+    paizei kala mono gia scaled !!!!!!!!!!!!!!!!!!!!!
+    
+    '''
 
     import tensorflow as tf
 
@@ -142,8 +162,6 @@ def mlp(X_train,y,X_test):
     y_pred = mlp.predict(X_test)
     
     return y_pred
-
-
 
 
 def mlp_classifier(X_train,y,X_test):
