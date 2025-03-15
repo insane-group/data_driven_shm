@@ -795,6 +795,21 @@ bgazei to parity plot tou y_test me to y_pred kai eite to kanei save eite to dei
 ---> 3d scatter plot for classification (scatterplot_3d_classification)
 pairnei san input to x kai to y kai bgazei ena 3d scatter plot twn triwn prwtn features tou x me tis antistoixes times y
 oi times tou y einai to xrwma tou kathe shmeiou
+
+---> 2d plot twn shmatwn kathe sensora (separate_sensors_plot)
+pairnei to onoma tou defect kai to shma kathe sensora ksewxwrista kai to plotarei
+oi times y einai to amplitude kai to x einai to sample
+
+---> 2d plot tou sunolikou shmatos (total_normalized_scatter)
+pairnei san input to onoma tou defect kai ena sample apo concatenated normalized 
+shma kai dinei san output to plot opou o aksonas y einai to normalized amplitude 
+kai o x einai to datapoint 
+
+---> 2d scatter tou sunolikou shmatos(total_normalized_plot)
+pairnei san input to onoma tou defect kai ena sample apo
+concatenated normalized shma kai dinei san output to scatter opou o aksonas 
+y einai to normalized amplitude kai o x einai h suxnothta 
+
 '''
 
 def bar_res_plot(model_list,min,mid,max,name_list):
@@ -871,6 +886,45 @@ def scatterplot_3d_classification(X_data,y_data):
     ax.set_zlabel('Z Label')
     plt.show()
 
+
+def separate_sensors_plot(defect,sample_s2,sample_s3,sample_s4):
+    import matplotlib.pyplot as plt
+    plt.clf()
+    plt.plot(sample_s2)
+    plt.plot(sample_s3)
+    plt.plot(sample_s4)
+    plt.title(f'{defect}')
+    plt.legend(['s2','s3','s4'],loc = 'lower right')
+    plt.ylabel('normalized amplitude')
+    plt.xlabel('sample')
+    '''plt.savefig(f'{defect}_all_sensors_plot.png')
+    plt.close('all')
+    plt.clf()'''
+    plt.show()
+
+
+
+def total_normalized_plot(defect,sample_total):
+    import matplotlib.pyplot as plt
+    plt.clf()
+    plt.plot(sample_total[0])
+    plt.title(f'{defect}')
+    plt.ylabel('normalized amplitude')
+    plt.xlabel('sample')
+    plt.show()
+
+
+
+def total_normalized_scatter(defect,sample_total):
+    import matplotlib.pyplot as plt
+    plt.clf()
+    plt.scatter(sample_total[1],sample_total[0])
+    plt.title(f'{defect}')
+    plt.ylabel('normalized amplitude')
+    plt.xlabel('sample')
+    plt.show()
+
+
 ########################################################################
 
 ########################################################################
@@ -905,6 +959,14 @@ def scatterplot_3d_classification(X_data,y_data):
 
 ########################################################################
 
+
+
+''''
+
+
+check gia na ta prosthesw
+
+'''
 
 
 
@@ -992,6 +1054,6 @@ def x_y_unwanted_remover(sensor2,sensor3,sensor4,y):
         del sensor3[i]
         del sensor4[i]
         y =  y.drop([i])
-    X = np.concatenate((sensor2,sensor3,sensor4),axis=1)
+    
     y = np.array(y)
-    return X,y
+    return sensor2,sensor3,sensor4,y
