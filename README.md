@@ -30,7 +30,7 @@ These libraries are:
 **xgboost** 3.0.0
 
 ## How to run 
-To run an experiment use `experiment_run.py`.
+To run an experiment use `experiment_run.py` .
 The script contains parameters that can be configured depending on the experiment.
 These parameters are:
 
