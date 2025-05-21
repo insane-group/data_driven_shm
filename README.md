@@ -30,9 +30,20 @@ These libraries are:
 **xgboost** 3.0.0
 
 ## How to run 
+To run an experiment use experiment_run.py.
+The script contains parameters that can be configured depending on the experiment.
+These parameters are:
+
+|                  |     Regression    |                      Classification                        | 
+| ---------------- | :-------------------: | :----------------------------------------------------------: |
+| Algorithm | Dummy regressor, Random forest, Linear regression, Multi Layer Perceptron  | Dummy classifier, Support Vector Machines, Random Forest, Multi Layer Perceptron| 
+| Scoring method          | Mean absolute percentage error, P-value | Accuracy, F1 Macro|
+
 
 ## Data
 
+The data used in the experiments can be found in the link :
+(link)
 ## License
 
 This project is licensed under the Apache 2 license. See `LICENSE` for details.
