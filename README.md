@@ -7,7 +7,11 @@ This repository contains the code that was used to conduct the experiments that 
 ## Abstract
 
 ## Necessary Python libraries
-The codes run with libraries for data processing,plotting and Machine Learning. These libraries are:
+The codes run with libraries for data processing,plotting and Machine Learning. To install them type 
+```bash
+pip install -r requirements.txt
+```
+These libraries are:
 
 **pandas** 2.2.3
 
