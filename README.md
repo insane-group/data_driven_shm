@@ -9,14 +9,21 @@ This repository contains the code that was used to conduct the experiments that 
 ## Necessary Python libraries
 The codes run with libraries for data processing,plotting and Machine Learning. These libraries are:
 
--**pandas** 2.2.3
--**numpy** 2.1.3
--**tensorflow** 2.19.0
--**scikit-learn** 1.5.0
--**matplotlib** 3.10.1
--**scipy** 1.15.2
--**pywt** 1.8.0
--**xgboost** 3.0.0
+**pandas** 2.2.3
+
+**numpy** 2.1.3
+
+**tensorflow** 2.19.0
+
+**scikit-learn** 1.5.0
+
+**matplotlib** 3.10.1
+
+**scipy** 1.15.2
+
+**pywt** 1.8.0
+
+**xgboost** 3.0.0
 
 ## How to run 
 
