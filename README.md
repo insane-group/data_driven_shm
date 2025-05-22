@@ -56,6 +56,7 @@ If you want to contact you can send an email to the author at jimjasonp@gmail.co
 
 
 ## Contributors
-
+ <a href= "https://github.com/Rekchris">Christoforos Rekatsinas </a> <br />
+ <a href= "https://github.com/ggianna">George Giannakopoulos </a> <br />
  <a href= "https://github.com/jimjasonp">Dimitrios Iason Papadopoulos </a> <br />
 
