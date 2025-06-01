@@ -49,7 +49,7 @@ mlp_clf = KerasClassifier(model=keras_mlp_classifier,model__input_shape=(X.shape
 
 # ---- Regressors ----
 dum_reg = DummyRegressor()
-rf_reg = RandomForestRegressor(n_estimators=500,criterion='entropy',random_state=1)
+rf_reg = RandomForestRegressor(n_estimators=500,random_state=1)
 lr = LinearRegression()
 mlp_reg = KerasRegressor(model=keras_mlp_regressor,model__input_shape=(X.shape[1],),epochs=150,batch_size=64,verbose=0)
 
