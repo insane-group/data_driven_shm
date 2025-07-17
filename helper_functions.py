@@ -853,15 +853,14 @@ Two arrows show the excitation frequency and the dominant harmonic frequency.
 takes as input the data path and the sample indexes for every kind of defect(dd,df,dm,all) and plots 4
 subplots of the harmonics of every defect mode for one sensor
 
----> parity plots it can either save or show the plot (parity_plot)
-pairnei san input to y_test to y_pred to montelo kai to mode dhladh an thelw na kanw save h aplws na dw to plot
-bgazei to parity plot tou y_test me to y_pred kai eite to kanei save eite to deixnei
+---> parity plots (parity_plot)
+the input is y_test and y_pred and the model and the mode 'save' or 'show'
+In 'save' mode the plot is saved and in 'show' mode the plot is shown
 
 
----> confusion matrix gia to classification task (confusion_matrix_display)
-pairnei san input ta y_test,y_pred,model,mode,accuracy kai bgazei to confusion matrix me titlo
-to onoma tou montelou kai to accuracy tou. To montelo prepei na einai function kai to mode einai 
-eite show eite save.
+---> confusion matrix (confusion_matrix_display)
+the input is y_test and y_pred and the model and the mode 'save' or 'show'
+In 'save' mode the plot is saved and in 'show' mode the plot is shown
 
 
 ---> regression results bar chart (regression_results_bar_charts)
