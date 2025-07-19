@@ -36,7 +36,7 @@ These libraries are:
 ## How to run 
 To run an experiment use `experiment_run.py` .
 The script contains parameters that can be configured depending on the experiment.
-These algorithms used in the experiments are:
+The algorithms used in the experiments are:
 
 |                  |     Regression    |                      Classification                        | 
 | ---------------- | :-------------------: | :----------------------------------------------------------: |
