@@ -27,8 +27,6 @@ These libraries are:
 
 **pywt** 1.8.0
 
-**xgboost** 3.0.0
-
 **joblib** 1.4.2
 
 **scikeras** 0.13.0
