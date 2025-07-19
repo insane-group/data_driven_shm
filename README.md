@@ -29,6 +29,10 @@ These libraries are:
 
 **xgboost** 3.0.0
 
+**joblib** 1.4.2
+
+**scikeras** 0.13.0
+
 ## How to run 
 To run an experiment use `experiment_run.py` .
 The script contains parameters that can be configured depending on the experiment.
