@@ -36,11 +36,11 @@ These libraries are:
 ## How to run 
 To run an experiment use `experiment_run.py` .
 The script contains parameters that can be configured depending on the experiment.
-These parameters are:
+These algorithms used in the experiments are:
 
 |                  |     Regression    |                      Classification                        | 
 | ---------------- | :-------------------: | :----------------------------------------------------------: |
-| Algorithm | Dummy regressor, Random forest, Linear regression, Multi Layer Perceptron  | Dummy classifier, Support Vector Machines, Random Forest, Multi Layer Perceptron| 
+| Algorithm | Dummy regressor, Random forest, Linear regression, Multi Layer Perceptron, Convolutional Neural Newtork, Long Short-Term Memory  | Dummy classifier, Support Vector Machines, Random Forest, Multi Layer Perceptron,Convolutional Neural Newtork, Long Short-Term Memory| 
 | Scoring method          | Mean absolute percentage error, P-value | Accuracy, F1 Macro|
 
 
