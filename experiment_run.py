@@ -1,4 +1,4 @@
-from helper_functions import y_set, X_set, add_noiz
+from helper_functions import y_set, X_set 
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, f1_score, mean_absolute_percentage_error
 from sklearn.model_selection import KFold
@@ -15,7 +15,7 @@ import numpy as np
 from joblib import Parallel, delayed
 
 # Parameters
-n_points_list =[375, 460, 750]
+n_points_list = [375, 460, 750]
 transformation_list = ['none', 'fourier']
 noise_levels = [2, 5, 10]
 
@@ -23,6 +23,7 @@ noise_levels = [2, 5, 10]
 balanced = r'C:\Users\jimja\Desktop\thesis\all_datasets\Balanced_Data'
 test = r'C:\Users\jimja\Desktop\thesis\all_datasets\test_classification'
 random = r'C:\Users\jimja\Desktop\thesis\all_datasets\random_data'
+
 
 
 def p_val(y_true, y_pred):
@@ -56,26 +57,25 @@ def regression_experiment_run():
         all_results = []
 
         for transformation in transformation_list:
-            X_random = X_set(random, transformation, n_points)[0]
-            X_data = X_set(balanced, transformation, n_points)[0]
             y_random = y_set(random)['dmg']
             y_data = y_set(balanced)['dmg']
 
-            scaler = StandardScaler()
-            X_data = scaler.fit_transform(X_data)
-            X_random = scaler.transform(X_random)
-            y = np.concatenate((y_data, y_random), axis=0)
-
             for noise_percent in noise_levels:
+                X_random = X_set(random, transformation, n_points, noise_percent=noise_percent)[0]
+                X_data = X_set(balanced, transformation, n_points, noise_percent=noise_percent)[0]
+
+                scaler = StandardScaler()
+                X_data = scaler.fit_transform(X_data)
+                X_random = scaler.transform(X_random)
+
                 X = np.concatenate((X_data, X_random), axis=0)
-                X = add_noiz(X, noise_percent)
+                y = np.concatenate((y_data, y_random), axis=0)
                 X_dl = np.expand_dims(X, axis=-1)
                 input_shape = X.shape[1]
 
                 model_fns = {
                     'LinearRegression': lambda: linear_regression(),
-                    'RandomForest': lambda: random_forest_reg()
-                    ,
+                    'RandomForest': lambda: random_forest_reg(),
                     'MLP': lambda: KerasRegressor(model=keras_mlp_regressor, model__input_shape=(input_shape,), epochs=150, batch_size=64, verbose=0),
                     'CNN': lambda: KerasRegressor(model=keras_cnn_regressor, model__input_shape=(input_shape, 1), epochs=150, batch_size=64, verbose=0),
                     'LSTM': lambda: KerasRegressor(model=keras_lstm_regressor, model__input_shape=(input_shape, 1), epochs=150, batch_size=64, verbose=0),
@@ -105,7 +105,6 @@ def regression_experiment_run():
                     })
 
         df = pd.DataFrame(all_results)
-        #print(df)
         df.to_csv(f'regression_results_n{n_points}.csv', index=False)
 
 
@@ -114,8 +113,6 @@ def classification_experiment_run():
         all_results = []
 
         for transformation in transformation_list:
-            X_data = X_set(balanced, transformation, n_points)[0]
-            X_test = X_set(test, transformation, n_points)[0]
             y_data = y_set(balanced)['defect']
             y_test = y_set(test)['defect']
 
@@ -123,21 +120,22 @@ def classification_experiment_run():
             y_data = np.array([label_map[label] for label in y_data])
             y_test = np.array([label_map[label] for label in y_test])
 
-            scaler = StandardScaler()
-            X_data = scaler.fit_transform(X_data)
-            X_test = scaler.transform(X_test)
-            y = np.concatenate((y_data, y_test), axis=0)
-
             for noise_percent in noise_levels:
+                X_data = X_set(balanced, transformation, n_points, noise_percent=noise_percent)[0]
+                X_test = X_set(test, transformation, n_points, noise_percent=noise_percent)[0]
+
+                scaler = StandardScaler()
+                X_data = scaler.fit_transform(X_data)
+                X_test = scaler.transform(X_test)
+
                 X = np.concatenate((X_data, X_test), axis=0)
-                X = add_noiz(X, noise_percent)
+                y = np.concatenate((y_data, y_test), axis=0)
                 X_dl = np.expand_dims(X, axis=-1)
                 input_shape = X.shape[1]
 
                 model_fns = {
                     'SVC': lambda: svc(),
-                    'RandomForest': lambda: random_forest_clf()
-                    ,
+                    'RandomForest': lambda: random_forest_clf(),
                     'MLP': lambda: KerasClassifier(model=keras_mlp_classifier, model__input_shape=(input_shape,), epochs=150, batch_size=64, verbose=0),
                     'CNN': lambda: KerasClassifier(model=keras_cnn_classifier, model__input_shape=(input_shape, 1), epochs=150, batch_size=64, verbose=0),
                     'LSTM': lambda: KerasClassifier(model=keras_lstm_classifier, model__input_shape=(input_shape, 1), epochs=150, batch_size=64, verbose=0),
@@ -167,7 +165,6 @@ def classification_experiment_run():
                     })
 
         df = pd.DataFrame(all_results)
-        #print(df)
         df.to_csv(f'classification_results_n{n_points}.csv', index=False)
 
 
