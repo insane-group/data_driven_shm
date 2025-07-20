@@ -38,7 +38,7 @@ The algorithms used in the experiments are:
 
 |                  |     Regression    |                      Classification                        | 
 | ---------------- | :-------------------: | :----------------------------------------------------------: |
-| Algorithm | Dummy regressor, Random forest, Linear regression, Multi Layer Perceptron, Convolutional Neural Newtork, Long Short-Term Memory  | Dummy classifier, Support Vector Machines, Random Forest, Multi Layer Perceptron,Convolutional Neural Newtork, Long Short-Term Memory| 
+| Algorithm | Dummy regressor, Random forest, Linear regression, Multi Layer Perceptron, Convolutional Neural Network, Long Short-Term Memory  | Dummy classifier, Support Vector Machines, Random Forest, Multi Layer Perceptron,Convolutional Neural Network, Long Short-Term Memory| 
 | Scoring method          | Mean absolute percentage error, P-value | Accuracy, F1 Macro|
 
 
