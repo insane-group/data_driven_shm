@@ -81,7 +81,7 @@ def regression_experiment_run():
                     'LSTM': lambda: KerasRegressor(model=keras_lstm_regressor, model__input_shape=(input_shape, 1), epochs=150, batch_size=64, verbose=0),
                 }
 
-                cv = KFold(n_splits=5, shuffle=True, random_state=1)
+                cv = KFold(n_splits=10, shuffle=True, random_state=1)
 
                 for name, model_fn in model_fns.items():
                     is_dl = name in ['MLP', 'CNN', 'LSTM']
